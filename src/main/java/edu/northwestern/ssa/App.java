@@ -32,16 +32,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class App {
-    // Source (exceptions): https://stackoverflow.com/questions/2305966/why-do-i-get-the-unhandled-exception-type-ioexception
     public static void main(String[] args) throws IOException {
         // Initializations
         String search_host=System.getenv("ELASTIC_SEARCH_HOST");
         String search_index=System.getenv("ELASTIC_SEARCH_INDEX");
         String newKey="";
-
-        // Using steve's testing
         String common_crawl=System.getenv("COMMON_CRAWL_FILENAME");
-        //String key="crawl-data/CC-NEWS/2020/04/CC-NEWS-20200405100433-01526.warc.gz";
         Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
 
         //Create the path for the downloaded file
@@ -57,7 +53,6 @@ public class App {
                 .build();
 
         // Fetch latest warc file
-        // SOURCE: https://sdk.amazonaws.com/java/api/latest/software/amazon/awssdk/services/s3/paginators/ListObjectsV2Iterable.html
         ListObjectsV2Iterable iterate = s3.listObjectsV2Paginator(ListObjectsV2Request.builder()
                 .bucket("commoncrawl")
                 .prefix(prefix)
@@ -73,8 +68,6 @@ public class App {
             }
         }
 
-        // Solve issue where first half of tests pass but the other half fail and vice-versa depending on
-        // supplied environment
         if(!file.exists()) {
             try {
                 System.out.println("Crawl was specified");
